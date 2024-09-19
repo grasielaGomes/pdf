@@ -9,20 +9,13 @@ services:
       - PORT=5000
     depends_on:
       - redis
-    command: >
-      sh -c "
-      pipenv run flask --app app.web init-db &&
-      pipenv run flask --app app.web run --host=0.0.0.0 --port=5000
-      "
+    command: "pipenv run flask --app app.web run --host=0.0.0.0 --port=5000"
 
   worker:
     build: .
     depends_on:
       - redis
-    command: >
-      sh -c "
-      pipenv run inv devworker
-      "
+    command: "pipenv run inv devworker"
 
   redis:
     image: "redis:latest"

@@ -27,15 +27,4 @@ ENTRYPOINT ["/app/entrypoint.sh"]
 
 # Set the default command
 CMD ["pipenv", "run", "flask", "--app", "app.web", "run", "--host=0.0.0.0", "--port=5000"]
-```
 
-**entrypoint.sh:**
-```bash
-#!/bin/bash
-set -e
-
-# Initialize the database
-pipenv run flask --app app.web init-db
-
-# Execute the container's main command
-exec "$@"
