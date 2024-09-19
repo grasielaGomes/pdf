@@ -2,10 +2,10 @@
 FROM python:3.11
 
 # Set the working directory
-WORKDIR /app
+WORKDIR .
 
 # Copy the Pipfile and Pipfile.lock
-COPY Pipfile Pipfile.lock /app/
+COPY Pipfile Pipfile.lock ./
 
 # Install pipenv
 RUN pip install pipenv
@@ -14,10 +14,23 @@ RUN pip install pipenv
 RUN pipenv install --deploy --ignore-pipfile
 
 # Copy the rest of the application code
-COPY . /app
+COPY . .
+
+# Create a virtual environment
+RUN pipenv shell
 
 # Initialize the database
-RUN pipenv run flask --app app.web init-db
+RUN pipenv run flask --app app.web init-db --detach
+
+# Initialize python server
+RUN inv dev --detach
+
+# Initialize the worker
+RUN inv devworker --detach
+
+# Initialize Redis
+RUN redis-server
+
 
 # Set the default command to run when starting the container
 CMD pipenv run flask --app app.web run --host=0.0.0.0 --port=${PORT:-5000}
