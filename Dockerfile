@@ -20,13 +20,13 @@ COPY . .
 RUN pipenv shell
 
 # Initialize the database
-RUN pipenv run flask --app app.web init-db --detach
+RUN pipenv run flask --app app.web init-db
 
 # Initialize python server
-RUN inv dev --detach
+RUN inv dev
 
 # Initialize the worker
-RUN inv devworker --detach
+RUN inv devworker
 
 # Initialize Redis
 RUN redis-server
