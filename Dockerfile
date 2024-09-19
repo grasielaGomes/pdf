@@ -16,9 +16,6 @@ RUN pipenv install
 # Copy the rest of the application code
 COPY . .
 
-# Create the instance directory
-RUN mkdir -p /app/instance
-
 # Copy the entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh
 
