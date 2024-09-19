@@ -5,13 +5,13 @@ FROM python:3.11
 WORKDIR /app
 
 # Copy the Pipfile and Pipfile.lock
-COPY Pipfile Pipfile.lock ./
+COPY Pipfile Pipfile.lock ./app/
 
 # Install pipenv
 RUN pip install pipenv
 
 # Install dependencies
-RUN pipenv install --deploy --ignore-pipfile
+RUN pipenv install
 
 # Copy the rest of the application code
 COPY . .
