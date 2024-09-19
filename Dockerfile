@@ -16,8 +16,26 @@ RUN pipenv install --deploy --ignore-pipfile
 # Copy the rest of the application code
 COPY . .
 
-# Initialize the database
-RUN pipenv run flask --app app.web init-db
+# Copy the entrypoint script
+COPY entrypoint.sh /app/entrypoint.sh
 
-# Set the default command to run when starting the container
+# Make the entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
+
+# Set the container's entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+# Set the default command
 CMD ["pipenv", "run", "flask", "--app", "app.web", "run", "--host=0.0.0.0", "--port=5000"]
+```
+
+**entrypoint.sh:**
+```bash
+#!/bin/bash
+set -e
+
+# Initialize the database
+pipenv run flask --app app.web init-db
+
+# Execute the container's main command
+exec "$@"
