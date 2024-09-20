@@ -11,4 +11,4 @@ services:
 
   worker:
     build: .
-    command: "pipenv run inv devworker"
+    command: "pipenv run inv prodworker"
