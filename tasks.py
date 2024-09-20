@@ -10,7 +10,6 @@ def dev(ctx):
         env={"APP_ENV": "development"},
     )
 
-
 @task
 def devworker(ctx):
     ctx.run(
@@ -18,3 +17,20 @@ def devworker(ctx):
         pty=os.name != "nt",
         env={"APP_ENV": "development"},
     )
+
+@task
+def prod(ctx):
+    ctx.run(
+        "flask --app app.web run --host=0.0.0.0 --port=5000",
+        pty=os.name != "nt",
+        env={"APP_ENV": "production"},
+    )
+
+@task
+def prodworker(ctx):
+    ctx.run(
+        "celery -A app.celery.worker worker --concurrency=4 --loglevel=INFO",
+        pty=os.name != "nt",
+        env={"APP_ENV": "production"},
+    )
+
